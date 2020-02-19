@@ -108,6 +108,7 @@ func newVideoTrack(opts *MediaDevicesOptions, d driver.Driver, constraints Media
 	vr := d.(driver.VideoRecorder)
 	r, err := vr.VideoRecord(constraints.Media)
 	if err != nil {
+		_ = d.Close()
 		return nil, err
 	}
 
@@ -117,6 +118,7 @@ func newVideoTrack(opts *MediaDevicesOptions, d driver.Driver, constraints Media
 
 	encoder, err := codec.BuildVideoEncoder(r, constraints.Media)
 	if err != nil {
+		_ = d.Close()
 		return nil, err
 	}
 
@@ -183,6 +185,7 @@ func newAudioTrack(opts *MediaDevicesOptions, d driver.Driver, constraints Media
 	ar := d.(driver.AudioRecorder)
 	reader, err := ar.AudioRecord(constraints.Media)
 	if err != nil {
+		_ = d.Close()
 		return nil, err
 	}
 
@@ -192,6 +195,7 @@ func newAudioTrack(opts *MediaDevicesOptions, d driver.Driver, constraints Media
 
 	encoder, err := codec.BuildAudioEncoder(reader, constraints.Media)
 	if err != nil {
+		_ = d.Close()
 		return nil, err
 	}
 
